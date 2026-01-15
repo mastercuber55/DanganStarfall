@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://c1sbxw4qwfsn8"]
+[gd_scene load_steps=16 format=3 uid="uid://c1sbxw4qwfsn8"]
 
 [ext_resource type="Script" uid="uid://cmkbwsmlt73jn" path="res://Scripts/StarsSpawner.gd" id="3_2j7f6"]
 [ext_resource type="PackedScene" uid="uid://l0ygd652fxk0" path="res://Scenes/Ship.tscn" id="3_koxch"]
@@ -10,8 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://b132qs651xvmu" path="res://Scenes/Asteroid.tscn" id="6_28m3g"]
 [ext_resource type="Script" uid="uid://cgdn75v5vi7xl" path="res://Scripts/EnemySpawner.gd" id="6_bgqso"]
 [ext_resource type="PackedScene" uid="uid://b5o3svhq1eq0e" path="res://Scenes/Health.tscn" id="6_jiwvy"]
+[ext_resource type="AudioStream" uid="uid://boxing3py87gf" path="res://Assets/explosion.wav" id="7_ixt46"]
 [ext_resource type="PackedScene" uid="uid://ct40phqpr1klc" path="res://Scenes/Fuel.tscn" id="7_oc3rq"]
 [ext_resource type="Script" uid="uid://dlk8a5pxibtes" path="res://Scripts/BulletsHandler.gd" id="8_bgqso"]
+[ext_resource type="AudioStream" uid="uid://cs2gqfvx02mrv" path="res://Assets/shoot.wav" id="9_aqtim"]
 [ext_resource type="Script" uid="uid://dlttabdq4fhbg" path="res://Scripts/Enemy.gd" id="9_wwtm7"]
 
 [node name="InfiniteSpace" type="Node2D"]
@@ -28,6 +30,9 @@ bulletScene = ExtResource("4_koxch")
 fuelScene = ExtResource("7_oc3rq")
 healthScene = ExtResource("6_jiwvy")
 
+[node name="Explosion" type="AudioStreamPlayer" parent="Bullets"]
+stream = ExtResource("7_ixt46")
+
 [node name="Player" parent="." node_paths=PackedStringArray("HealthBar", "FuelBar") instance=ExtResource("3_koxch")]
 unique_name_in_owner = true
 position = Vector2(576, 324)
@@ -36,13 +41,17 @@ HealthBar = NodePath("../User Interface/VSplitContainer/Health")
 FuelBar = NodePath("../User Interface/VSplitContainer/Fuel")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
 
 [node name="Pickuper" type="Area2D" parent="Player"]
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Player/Pickuper"]
-polygon = PackedVector2Array(-24, -15, -16, -23, -1, -8, 22, 0, -1, 8, -16, 23, -24, 15, -24, 8, -16, 8, -16, -8, -24, -8)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Player/Pickuper"]
+polygon = PackedVector2Array(-15, 14, -6, 0, -15, -14, -7, -14, 16, 0, -7, 14)
+
+[node name="Shoot" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource("9_aqtim")
 
 [node name="Pickups" type="Node2D" parent="."]
 
@@ -64,8 +73,10 @@ asteroidScene = ExtResource("6_28m3g")
 unique_name_in_owner = true
 
 [node name="VSplitContainer" type="VSplitContainer" parent="User Interface"]
-offset_right = 237.0
-offset_bottom = 66.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 253.0
+offset_bottom = 82.0
 dragger_visibility = 1
 
 [node name="Health" type="ProgressBar" parent="User Interface/VSplitContainer"]

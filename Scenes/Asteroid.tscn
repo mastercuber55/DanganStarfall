@@ -1,18 +1,18 @@
 [gd_scene load_steps=4 format=3 uid="uid://b132qs651xvmu"]
 
-[ext_resource type="Texture2D" uid="uid://by0fmd0iqjxpu" path="res://Assets/spritesheet.png" id="1_e0e3k"]
+[ext_resource type="Texture2D" uid="uid://c0ubj073wwgjq" path="res://Assets/Spritesheet.png" id="1_jnrf0"]
 [ext_resource type="PackedScene" uid="uid://d01142qxsidc3" path="res://Scenes/HealthComponent.tscn" id="2_jnrf0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_j8om2"]
-radius = 21.023796
+radius = 15.132746
 
 [node name="Asteroid" type="RigidBody2D"]
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_e0e3k")
+texture = ExtResource("1_jnrf0")
 region_enabled = true
-region_rect = Rect2(8, 264, 48, 48)
+region_rect = Rect2(96, 0, 32, 32)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_j8om2")

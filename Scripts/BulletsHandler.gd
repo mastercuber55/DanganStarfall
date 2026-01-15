@@ -39,6 +39,7 @@ func _onBulletHit(body: RigidBody2D, bullet: Area2D):
 				pickup = fuelScene.instantiate()
 			pickup.position = body.position
 			$"../Pickups".call_deferred("add_child", pickup)
+		$Explosion.play()
 		body.queue_free()
 		
 	bullets.erase(bullet)

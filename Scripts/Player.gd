@@ -32,6 +32,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		var currentTime = Time.get_ticks_msec()
 		
 		if currentTime >= nextTime:
+			$Shoot.play()
 			%Bullets.shootBullet(self)
 			state.apply_central_impulse(transform.x * RECOIL)
 			nextTime = currentTime + cooldownMS

@@ -35,7 +35,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 			state.apply_central_impulse(transform.x * RECOIL)
 			nextTime = currentTime + cooldownMS
 			
-	elif dist < 300:
+	elif dist < 300 or dist > 200:
 		chaseState = true
 	else:
 		chaseState = false	
