@@ -1,6 +1,7 @@
 extends Node2D
 
 @export var enemyScene: PackedScene
+@export var enemyScript: Script
 @export var HealthComponentScene: PackedScene
 @export var health := 10
 
@@ -10,7 +11,7 @@ extends Node2D
 func _spawn_enemy():
 	var enemy := enemyScene.instantiate()
 	
-	enemy.set_script(load("res://Scripts/Enemy.gd"))
+	enemy.set_script(enemyScript)
 	enemy.player = %Player
 	enemy.bulletsManager = %Bullets
 	
@@ -26,10 +27,8 @@ func _spawn_enemy():
 		randf_range(y_min, y_max)
 	)
 	
-	var HealthComponent = HealthComponentScene.instantiate()
-	HealthComponent.set_script(load("res://Scripts/HealthComponent.gd"))
+	var HealthComponent = enemy.get_node("HealthComponent")
 	HealthComponent.health = self.health
-	enemy.add_child(HealthComponent)	
 	
 	var notifier = enemy.get_node("VisibleOnScreenNotifier2D")
 	notifier.screen_exited.connect(_on_enemy_outside.bind(enemy))
@@ -46,4 +45,7 @@ func _ready() -> void:
 
 func _on_timer_timeout() -> void:
 	$Timer.wait_time = randf_range(0.5, 2.0)
+	if %Player == null:
+		$Timer.stop()
+		return
 	_spawn_enemy()

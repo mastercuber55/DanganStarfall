@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://ct40phqpr1klc"]
+
+[ext_resource type="Texture2D" uid="uid://by0fmd0iqjxpu" path="res://Assets/spritesheet.png" id="1_8ov6b"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ewbcv"]
+atlas = ExtResource("1_8ov6b")
+region = Rect2(128, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7i84d"]
+atlas = ExtResource("1_8ov6b")
+region = Rect2(192, 320, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3qs7n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ewbcv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7i84d")
+}],
+"loop": true,
+"name": &"default",
+"speed": 3.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_km5yl"]
+radius = 16.03122
+
+[node name="Fuel" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 0.5568628, 0.5568628, 1)
+sprite_frames = SubResource("SpriteFrames_3qs7n")
+autoplay = "default"
+frame_progress = 0.9733332
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_km5yl")

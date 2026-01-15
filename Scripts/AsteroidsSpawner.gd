@@ -40,5 +40,8 @@ func _ready() -> void:
 	$Timer.start()
 
 func _on_timer_timeout() -> void:
+	if %Player == null:
+		$Timer.stop()
+		return
 	$Timer.wait_time = randf_range(0.5, 2.0)
 	_spawn_asteroid()

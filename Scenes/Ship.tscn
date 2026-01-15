@@ -1,10 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://l0ygd652fxk0"]
+[gd_scene load_steps=5 format=3 uid="uid://l0ygd652fxk0"]
 
+[ext_resource type="PackedScene" uid="uid://d01142qxsidc3" path="res://Scenes/HealthComponent.tscn" id="2_jfy60"]
+[ext_resource type="PackedScene" uid="uid://b6rrd2y7t8kq2" path="res://Scenes/FuelComponent.tscn" id="3_7qett"]
 [ext_resource type="Texture2D" uid="uid://by0fmd0iqjxpu" path="res://Assets/spritesheet.png" id="3_sjai3"]
+[ext_resource type="Script" uid="uid://cyugao0r0tln5" path="res://Scripts/FuelComponent.gd" id="4_sjai3"]
 
 [node name="Ship" type="RigidBody2D"]
 can_sleep = false
-metadata/_edit_group_ = true
 
 [node name="Tail" type="Sprite2D" parent="."]
 position = Vector2(-44, 0)
@@ -26,3 +28,10 @@ position = Vector2(30, 0)
 polygon = PackedVector2Array(-24, -15, -16, -23, -1, -8, 22, 0, -1, 8, -16, 23, -24, 15, -24, 8, -16, 8, -16, -8, -24, -8)
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="HealthComponent" parent="." instance=ExtResource("2_jfy60")]
+health = 100
+
+[node name="FuelComponent" parent="." instance=ExtResource("3_7qett")]
+script = ExtResource("4_sjai3")
+fuel = 100.0

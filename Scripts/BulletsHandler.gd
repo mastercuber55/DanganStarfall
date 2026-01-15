@@ -3,6 +3,9 @@ extends Node2D
 @export var bulletSpeed := 1000
 @export var bulletScene : PackedScene
 
+@export var fuelScene : PackedScene 
+@export var healthScene : PackedScene
+
 var bullets : Array[Area2D] = []
 
 func _process(delta: float) -> void:
@@ -18,7 +21,7 @@ func shootBullet(shooter: RigidBody2D):
 	bullet.body_entered.connect(_onBulletHit.bind(bullet))
 	
 	bullets.append(bullet)
-	add_child(bullet)
+	call_deferred("add_child", bullet)
 
 func _onBulletHit(body: RigidBody2D, bullet: Area2D):	
 	if not body.has_node("HealthComponent"):
@@ -28,6 +31,15 @@ func _onBulletHit(body: RigidBody2D, bullet: Area2D):
 	HealthComponent.health -= 1
 	
 	if HealthComponent.health <= 0:
+		if randf() < 0.25:
+			var pickup
+			if randf() > 0.5:
+				pickup = healthScene.instantiate()
+			else:
+				pickup = fuelScene.instantiate()
+			pickup.position = body.position
+			$"../Pickups".call_deferred("add_child", pickup)
 		body.queue_free()
+		
 	bullets.erase(bullet)
 	bullet.queue_free()

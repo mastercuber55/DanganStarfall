@@ -28,6 +28,10 @@ Shoot={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_2="PlayerPickups"
+
 [physics]
 
 2d/default_gravity=0.0

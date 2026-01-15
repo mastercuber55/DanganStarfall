@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c1sbxw4qwfsn8"]
+[gd_scene load_steps=14 format=3 uid="uid://c1sbxw4qwfsn8"]
 
 [ext_resource type="Script" uid="uid://cmkbwsmlt73jn" path="res://Scripts/StarsSpawner.gd" id="3_2j7f6"]
 [ext_resource type="PackedScene" uid="uid://l0ygd652fxk0" path="res://Scenes/Ship.tscn" id="3_koxch"]
@@ -9,24 +9,50 @@
 [ext_resource type="PackedScene" uid="uid://d01142qxsidc3" path="res://Scenes/HealthComponent.tscn" id="5_wyu52"]
 [ext_resource type="PackedScene" uid="uid://b132qs651xvmu" path="res://Scenes/Asteroid.tscn" id="6_28m3g"]
 [ext_resource type="Script" uid="uid://cgdn75v5vi7xl" path="res://Scripts/EnemySpawner.gd" id="6_bgqso"]
+[ext_resource type="PackedScene" uid="uid://b5o3svhq1eq0e" path="res://Scenes/Health.tscn" id="6_jiwvy"]
+[ext_resource type="PackedScene" uid="uid://ct40phqpr1klc" path="res://Scenes/Fuel.tscn" id="7_oc3rq"]
 [ext_resource type="Script" uid="uid://dlk8a5pxibtes" path="res://Scripts/BulletsHandler.gd" id="8_bgqso"]
+[ext_resource type="Script" uid="uid://dlttabdq4fhbg" path="res://Scripts/Enemy.gd" id="9_wwtm7"]
 
-[node name="Node2D" type="Node2D"]
+[node name="InfiniteSpace" type="Node2D"]
 
 [node name="Stars" type="Parallax2D" parent="."]
 repeat_size = Vector2(1152, 648)
 script = ExtResource("3_2j7f6")
 starScene = ExtResource("4_j8om2")
 
-[node name="Player" parent="." instance=ExtResource("3_koxch")]
+[node name="Bullets" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("8_bgqso")
+bulletScene = ExtResource("4_koxch")
+fuelScene = ExtResource("7_oc3rq")
+healthScene = ExtResource("6_jiwvy")
+
+[node name="Player" parent="." node_paths=PackedStringArray("HealthBar", "FuelBar") instance=ExtResource("3_koxch")]
 unique_name_in_owner = true
 position = Vector2(576, 324)
 script = ExtResource("4_76o0r")
+HealthBar = NodePath("../User Interface/VSplitContainer/Health")
+FuelBar = NodePath("../User Interface/VSplitContainer/Fuel")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
-[node name="HealthComponent" parent="Player" instance=ExtResource("5_wyu52")]
-health = 100
+[node name="Pickuper" type="Area2D" parent="Player"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Player/Pickuper"]
+polygon = PackedVector2Array(-24, -15, -16, -23, -1, -8, 22, 0, -1, 8, -16, 23, -24, 15, -24, 8, -16, 8, -16, -8, -24, -8)
+
+[node name="Pickups" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+script = ExtResource("6_bgqso")
+enemyScene = ExtResource("3_koxch")
+enemyScript = ExtResource("9_wwtm7")
+HealthComponentScene = ExtResource("5_wyu52")
+
+[node name="Timer" type="Timer" parent="Enemies"]
 
 [node name="Asteroids" type="Node2D" parent="."]
 script = ExtResource("5_8mxl6")
@@ -34,24 +60,21 @@ asteroidScene = ExtResource("6_28m3g")
 
 [node name="Timer" type="Timer" parent="Asteroids"]
 
-[node name="Enemies" type="Node2D" parent="."]
-script = ExtResource("6_bgqso")
-enemyScene = ExtResource("3_koxch")
-HealthComponentScene = ExtResource("5_wyu52")
-
-[node name="Timer" type="Timer" parent="Enemies"]
-
-[node name="Bullets" type="Node2D" parent="."]
-unique_name_in_owner = true
-script = ExtResource("8_bgqso")
-bulletScene = ExtResource("4_koxch")
-
 [node name="User Interface" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 
-[node name="Health Label" type="Label" parent="User Interface"]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="VSplitContainer" type="VSplitContainer" parent="User Interface"]
+offset_right = 237.0
+offset_bottom = 66.0
+dragger_visibility = 1
 
-[connection signal="timeout" from="Asteroids/Timer" to="Asteroids" method="_on_timer_timeout"]
+[node name="Health" type="ProgressBar" parent="User Interface/VSplitContainer"]
+layout_mode = 2
+tooltip_text = "Player's Health"
+
+[node name="Fuel" type="ProgressBar" parent="User Interface/VSplitContainer"]
+layout_mode = 2
+
+[connection signal="area_entered" from="Player/Pickuper" to="Player" method="_on_pickuper_area_entered"]
 [connection signal="timeout" from="Enemies/Timer" to="Enemies" method="_on_timer_timeout"]
+[connection signal="timeout" from="Asteroids/Timer" to="Asteroids" method="_on_timer_timeout"]
